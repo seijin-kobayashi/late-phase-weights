@@ -1,4 +1,4 @@
-# Economical ensembles with hypernetworks
+# NEURAL NETWORKS WITH LATE-PHASE WEIGHTS
 ## Requirements
 To install requirements:
 ```setup
