@@ -115,7 +115,7 @@ def load_data(config):
                                                transform=test_transform,
                                                download=True)
 
-            config["ood_dataset_names"] = ["LSUN", "TIN", "SVHN", "CIFAR", "iSUN"]
+            config["ood_dataset_names"] = ["LSUN", "TIN", "SVHN", "CIFAR"]
 
             svhn_ood_test_data = dset.SVHN(config['data_folder'], split='test',
                                            transform=test_transform,
@@ -140,20 +140,10 @@ def load_data(config):
 
             tin_ood_test_data = dset.ImageFolder(config['data_folder'] + '/TIN', 
                                                         transform=test_transform)
-            
-            if not (os.path.exists(config['data_folder'] + '/iSUN')):
-                urllib.request.urlretrieve('https://www.dropbox.com/s/ssz7qxfqae0cca5/iSUN.tar.gz?dl=1', config['data_folder'] + '/iSUN.tar.gz')
-                tar = tarfile.open(config['data_folder'] + '/iSUN.tar.gz', "r:gz")
-                tar.extractall(path=config['data_folder'] + '/iSUN')
-                tar.close()
-            
-            iSUN_ood_test_data = dset.ImageFolder(config['data_folder'] + '/iSUN',
-                                                        transform=test_transform)
 
             ood_test_datasets = [lsun_ood_test_data, tin_ood_test_data,
                                                      svhn_ood_test_data, 
-                                                     c_ood_test_data,
-                                                     iSUN_ood_test_data]
+                                                     c_ood_test_data]
             
             ood_test_loader_list = []
             for ood_dataset in ood_test_datasets:

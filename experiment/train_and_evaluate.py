@@ -222,30 +222,6 @@ if __name__ == '__main__':
                               device, epoch, writer=writer)
             config['auroc_dict'][epoch] = aurocs
 
-        # If necessary, test each specialist individually.
-        if ((epoch - 1) % config['individual_test_interval'] == 0 or epoch == config['epochs']):
-            model_to_test.set_average_specialists(False)
-            for i in range(config['num_specialists']):
-                i_acc = test(config, None, test_loader,
-                             ensemble_to_test, device, epoch,
-                             log=False,
-                             specialist=i,
-                             compute_nll=True)
-
-                if "ood" in config['problem']:
-                    i_aurocs = test_ood(config, None,
-                                   test_loader,
-                                   minimal_ood_test_loader_list,
-                                   ensemble_to_test,
-                                   device, epoch, to_print=False,
-                                   specialist=i)
-
-                print('Specialist {}: acc={}, aurocs={}'.format(i, i_acc, i_aurocs))
-
-                if log_file:
-                    print('[epoch {}]] specialist {}: acc={}, aurocs={}'.format(epoch, i, i_acc, i_aurocs),file=log_file)
-            model_to_test.set_average_specialists(True)
-
     config['final_test_acc']=test_acc
     print('Done training on all tasks.')
     if "ood" in config['problem']:
@@ -253,6 +229,8 @@ if __name__ == '__main__':
                                 ood_test_loader_list, ensemble_to_test,
                                 device, epoch, writer=writer)
         config['final_auroc'] = final_auroc
+        print("Final AUROC averaged over datasets: ", np.mean(final_auroc))
+    print("Final test set accuracy: ", test_acc)
     
     save_performance_summary(config, training_finished=True)
 
