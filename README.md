@@ -4,7 +4,11 @@ To install requirements:
 ```setup
 pip install -r requirements.txt
 ```
-## Training and evaluation
+
+## Training from scratch
+
+### Training
+
 To train and evaluate the model in the paper, run this command:
 ```train
 python experiment/train_and_evaluate.py --config <config to run>
@@ -20,7 +24,7 @@ The following config are available:
 
 Please refer to the respective tables in the paper for more details on the configuration used.
 
-## Results
+### Results
 Our model achieves the following performance (metrics averaged over 5 seeds):
 
 | Config name         | Test set Accuracy  | 
