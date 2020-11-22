@@ -183,60 +183,55 @@ if __name__ == '__main__':
                 swa_model = swa_ensemble.get_models()
                 swa_n = 0
 
-            # Swap models to be tested, from the SGD-trained model
-            # to the averaged one.
-            model_to_test = swa_model
-            ensemble_to_test = swa_ensemble
-
             # Update SWA model parameters, including BN statistics.
             cprint('Updating SWA model', 'red')
             optim_utils.moving_average(
                 swa_model,
                 model,
                 1.0 / (swa_n + 1))
-            optim_utils.bn_update(
-                train_loader,
-                swa_model)
             swa_n += 1
-
-        ensemble_to_test.eval()
-        model_to_test.set_average_specialists(True)
 
         # Step every scheduler, for every model.
         if config['lr_scheduler']:
             for scheduler in schedulers:
                 scheduler.step()
 
-        # Compute test set accuracy using ensemble-averaged predictions.
-        print('Testing model...')
-        test_acc = test(config, log_file, test_loader,
-                        ensemble_to_test, device, epoch,
-                        writer=writer, compute_nll=True)
-        config['test_acc_dict'][epoch] = test_acc
+    if config['optimizer'] == 'SWA' and epoch >= config['swa_start']:
+        # Swap models to be tested, from the SGD-trained model
+        # to the averaged one.
+        model_to_test = swa_model
+        ensemble_to_test = swa_ensemble
+ 
+        print("Updating SWA batchnorm units")
+        optim_utils.bn_update(
+            train_loader,
+            swa_model)
 
-        # Calculate OOD statistics using ensemble-averaged entropies.
-        if "ood" in config['problem'] and (epoch - 1) % config['ood_log_interval'] == 0:
-            aurocs = test_ood(config, log_file, test_loader,
-                              minimal_ood_test_loader_list,
-                              ensemble_to_test,
-                              device, epoch, writer=writer)
-            config['auroc_dict'][epoch] = aurocs
+    ensemble_to_test.eval()
+    model_to_test.set_average_specialists(True)
+
+    # Compute test set accuracy using ensemble-averaged predictions.
+    print('Testing model...')
+    test_acc = test(config, log_file, test_loader,
+                    ensemble_to_test, device, epoch,
+                    writer=writer, compute_nll=True)
+    config['test_acc_dict'][epoch] = test_acc
+
 
     config['final_test_acc']=test_acc
-    print('Done training on all tasks.')
     if "ood" in config['problem']:
         final_auroc = test_ood(config, log_file, test_loader,
                                 ood_test_loader_list, ensemble_to_test,
                                 device, epoch, writer=writer)
         config['final_auroc'] = final_auroc
-        print("Final AUROC averaged over datasets: ", np.mean(final_auroc))
-    print("Final test set accuracy: ", test_acc)
+        print("\nFinal AUROC averaged over datasets: ", np.mean(final_auroc))
+    print("\nFinal test set accuracy: ", test_acc)
     
     save_performance_summary(config, training_finished=True)
 
     final_model_path = config['save_path'] + 'final_' + config["run_id"] \
             + str(os.getpid()) + ".pth.tar"
-    print('Saving final checkpoint at {}.'.format(final_model_path))
+    print('\nSaving final checkpoint at {}.'.format(final_model_path))
 
     checkpoint = {
         'epoch': epoch,

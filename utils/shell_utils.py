@@ -77,7 +77,7 @@ def parse_shell_args(args):
             description="Run task inference experiment.")
 
     parser.add_argument("--config",
-                            choices=["cifar10_bn", "cifar10_bn_swa", "cifar100_bn", "cifar100_bn_swa", "cifar100_hnet", "cifar100_hnet_swa"],
+                            choices=["cifar10_bn", "cifar10_bn_swa", "cifar100_bn", "cifar100_bn_swa", "cifar10_wrn14_bn_swa", "cifar100_wrn14_bn_swa"],
                             default=argparse.SUPPRESS,
                             help="Configuration to run.")
 
