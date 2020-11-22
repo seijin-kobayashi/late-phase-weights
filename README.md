@@ -43,6 +43,14 @@ Our model achieves the following performance (metrics averaged over 5 seeds):
 
 ### Finetuning
 
+
+Before starting, you would need to download the ImageNet data and place the following files in the ./datasets directory:
+
+    ILSVRC2012_img_train.tar  
+    ILSVRC2012_img_val.tar
+    ILSVRC2012_devkit_t12.tar.gz  
+
+
 The following command will finetune a pretrained model for 20 epochs with the late phase batchnorm algorithm:
 
     train_super_late_phase.py --arch=<architecture>
