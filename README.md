@@ -13,6 +13,9 @@ To train and evaluate the model in the paper, run this command:
 ```train
 python experiment/train_and_evaluate.py --config <config to run>
 ```
+
+This will train the model and return the final test set accuracy and OOD results.
+
 The following config are available:
 
 | Config         | Description  |
@@ -37,7 +40,6 @@ Our model achieves the following performance (metrics averaged over 5 seeds):
 | cifar100_bn   |     82.87% +/- 0.22%  | 
 | cifar100_bn_swa   |     83.06% +/- 0.08%        | 
 | cifar100_wrn14_bn_swa   |     85.00% +/- 0.25%        | 
-
 
 ## Finetuning pretrained models
 
