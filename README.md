@@ -1,4 +1,19 @@
 # NEURAL NETWORKS WITH LATE-PHASE WEIGHTS
+
+by <b>Johannes von Oswald*, Seijin Kobayashi*, Joao Sacramento*</b><br/>
+Alexander Meulemans, Christian Henning, Benjamin F. Grewe<br/>
+(* – equal contribution)
+
+In this repository, you can find a PyTorch implementation of [neural network with late-phase weights](https://arxiv.org/abs/2007.12927).
+
+In a late stage of training, a small set of parameters (for example the weights of BatchNorm layers) are duplicated K times and possibility perturbed from another.
+Then, we iteratively train this ensemble of K neural networks differing only in these late-phase weights. Since most of the parameters in the ensemble are shared little additional memory is needed to instantiate it.
+
+While the K different instances of these special late-phase weights are updated directly on the gradients w.r.t. a given loss, 
+the gradients for the rest of the parameters are accumulated. After a full loop over the ensemble, the main bulk i.e. the parameters shared across the ensemble are updated.
+
+At the end of training, instead of treating each ensemble member separately, we spacially average the ensemble of late-phase weights to recover a single neural network. This leads to improved test set generalisation across multiple different datasets and model classes. Without any additional training efforts, one can also use the economically trained ensemble as a standard ensemble by averaging its predictions (instead of the weights) which leads to strong out-of-distribution detection performance on the vision models we tested on.
+
 ## Requirements
 To install requirements:
 ```setup
