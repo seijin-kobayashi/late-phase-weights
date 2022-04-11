@@ -1,7 +1,7 @@
 # NEURAL NETWORKS WITH LATE-PHASE WEIGHTS
 
 by <b>Johannes von Oswald*, Seijin Kobayashi*</b><br/>
-Alexander Meulemans, Christian Henning, Joao Sacramento<br/>
+Alexander Meulemans, Christian Henning, Benjamin F. Grewe, Joao Sacramento<br/>
 (* – equal contribution)
 
 In this repository, you can find a PyTorch implementation of [neural network with late-phase weights](https://arxiv.org/abs/2007.12927).
@@ -88,7 +88,7 @@ Please cite our paper if you use this code in your research project.
 ```
 @inproceedings{oshg2019hypercl,
 title={Neural networks with late-phase weights},
-author={Johannes von Oswald and Seijin Kobayashi and Alexander Meulemans and Christian Henning and Jo{\~a}o Sacramento},
+author={Johannes von Oswald and Seijin Kobayashi and Alexander Meulemans and Christian Henning and Benjamin F. Grewe and Jo{\~a}o Sacramento},
 booktitle={International Conference on Learning Representations},
 year={2021},
 url={https://arxiv.org/abs/2007.12927}
